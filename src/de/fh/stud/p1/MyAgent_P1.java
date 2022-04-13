@@ -2,19 +2,23 @@ package de.fh.stud.p1;
 
 import de.fh.kiServer.agents.Agent;
 import de.fh.kiServer.util.Util;
-import de.fh.pacman.PacmanAgent_2021;
-import de.fh.pacman.PacmanGameResult;
-import de.fh.pacman.PacmanPercept;
-import de.fh.pacman.PacmanStartInfo;
+import de.fh.pacman.*;
 import de.fh.pacman.enums.PacmanAction;
 import de.fh.pacman.enums.PacmanActionEffect;
 
 public class MyAgent_P1 extends PacmanAgent_2021 {
-
-	/*
-	 * TODO Praktikum 1: Fügt gemäß der Aufgabenstellung neue Attribute hinzu, falls notwendig.
+	/**
+	 * Array vom Typs PacmanAction, welches eine Kompass-Reihenfolge für die Laufrichtungen des Agenten festlegt.
+	 * Die aufsteigende Reihenfolge ist so festgelegt, dass der Nachfolger einer Richtung, rechts vom Vorgänger liegt.
+	 * Der Kompass wird dementsprechend im Uhrzeigersinn gelesen.
 	 */
-	
+	private PacmanAction[] compass = {PacmanAction.GO_NORTH, PacmanAction.GO_EAST, PacmanAction.GO_SOUTH, PacmanAction.GO_WEST};
+
+	/**
+	 * int-Wert der den Index des äquivalenten Wertes der derzeitigen nextAction in compass repräsentiert.
+	 */
+	private int nextActionID = 0;
+
 	/**
 	 * Die als nächstes auszuführende Aktion
 	 */
@@ -41,12 +45,15 @@ public class MyAgent_P1 extends PacmanAgent_2021 {
 		
 		//Nachdem das Spiel gestartet wurde, geht der Agent nach Osten
 		if(actionEffect == PacmanActionEffect.GAME_INITIALIZED) {
-			nextAction = PacmanAction.GO_EAST;
+			nextActionID = 1;
+			nextAction = compass[nextActionID]; //PacmanAction.GO_EAST;
 		}
-		
-		/*
-		 * TODO Praktikum 1: Erweitert diese action-Methode gemäß der Aufgabenstellung. test
-		 */
+
+		// Wenn der Agent kontakt mit einer Wand hat, geht er rechts von seiner Blickrichtung weiter
+		if(actionEffect == PacmanActionEffect.BUMPED_INTO_WALL){
+			nextActionID = (++nextActionID) %4;
+			nextAction = compass[nextActionID];
+		}
 		
 		return nextAction;
 	}
