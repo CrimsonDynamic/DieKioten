@@ -17,14 +17,41 @@ public class BaumTest {
 		 * TODO Praktikum 2 [3]: Baut hier basierend auf dem gegebenen 
 		 * Anfangszustand (siehe view, posX und posY) den Suchbaum auf.
 		 */
+		Knoten posPacman = BFS(new Knoten(view, posX, posY));
+
+		// Tiefentest
+		Knoten tmp = posPacman;
+		int i = 0;
+		System.out.print("|");
+		while(tmp.getChildren() != null) {
+			if(!tmp.getChildren().isEmpty()) {
+				System.out.print(i + " |");
+				tmp = tmp.getChildren().get(0);
+			}
+			else
+				tmp = null;
+		}
+		System.out.println("\n");
 	}
-	public void BFS(Knoten node){
+
+	// Wurde auf static erweitert um in main aufgerufen werden zu können
+	static public Knoten BFS(Knoten node){
 		int count = 0;
-		LinkedList<Knoten> queue = new LinkedList<Knoten>();
+		LinkedList<Knoten> queue = new LinkedList<>();
 		node.setSeen(true);
 		queue.add(node);
-		while(queue.isEmpty()){
 
+		while(!queue.isEmpty()){
+			if(count == 10)
+				return node;
+			node.expand();
+			for(Knoten child : node.getChildren()){
+				if(!child.isSeen())
+					queue.add(child);
+			}
+			count++;
 		}
+
+		return node;
 	}
 }
