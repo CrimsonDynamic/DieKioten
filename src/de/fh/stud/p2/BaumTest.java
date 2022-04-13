@@ -1,9 +1,8 @@
 package de.fh.stud.p2;
 
 import de.fh.pacman.enums.PacmanTileType;
-
+import java.util.LinkedList;
 public class BaumTest {
-
 	public static void main(String[] args) {
 		//Anfangszustand nach Aufgabe
 		PacmanTileType[][] view = {
@@ -18,5 +17,14 @@ public class BaumTest {
 		 * TODO Praktikum 2 [3]: Baut hier basierend auf dem gegebenen 
 		 * Anfangszustand (siehe view, posX und posY) den Suchbaum auf.
 		 */
+	}
+	public void BFS(Knoten node){
+		int count = 0;
+		LinkedList<Knoten> queue = new LinkedList<Knoten>();
+		node.setSeen(true);
+		queue.add(node);
+		while(queue.isEmpty()){
+
+		}
 	}
 }
