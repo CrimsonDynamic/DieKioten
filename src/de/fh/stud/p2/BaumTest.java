@@ -12,7 +12,7 @@ public class BaumTest {
 				{PacmanTileType.WALL,PacmanTileType.WALL,PacmanTileType.WALL,PacmanTileType.WALL}
 		};
 		//Startposition des Pacman
-		int posX = 1, posY = 1;
+		int posX = 2, posY = 2;
 		/*
 		 * TODO Praktikum 2 [3]: Baut hier basierend auf dem gegebenen 
 		 * Anfangszustand (siehe view, posX und posY) den Suchbaum auf.
@@ -42,12 +42,18 @@ public class BaumTest {
 		queue.add(node);
 
 		while(!queue.isEmpty()){
+			node = queue.get(0);
+			queue.remove(0);
+
 			if(count == 10)
 				return node;
 			node.expand();
 			for(Knoten child : node.getChildren()){
 				if(!child.isSeen())
+				{
 					queue.add(child);
+					child.setSeen(true);
+				}
 			}
 			count++;
 		}
