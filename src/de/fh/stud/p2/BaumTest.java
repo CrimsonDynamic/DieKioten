@@ -12,7 +12,7 @@ public class BaumTest {
 				{PacmanTileType.WALL,PacmanTileType.WALL,PacmanTileType.WALL,PacmanTileType.WALL}
 		};
 		//Startposition des Pacman
-		int posX = 2, posY = 2;
+		int posX = 0, posY = 0;
 		/*
 		 * TODO Praktikum 2 [3]: Baut hier basierend auf dem gegebenen 
 		 * Anfangszustand (siehe view, posX und posY) den Suchbaum auf.
@@ -20,16 +20,27 @@ public class BaumTest {
 		Knoten posPacman = BFS(new Knoten(view, posX, posY));
 
 		// Tiefentest
-		Knoten tmp = posPacman;
-		int i = 0;
-		System.out.print("|");
-		while(tmp.getChildren() != null) {
-			if(!tmp.getChildren().isEmpty()) {
-				System.out.print(i + " |");
-				tmp = tmp.getChildren().get(0);
+		int tiefe = 0;
+		LinkedList<Knoten> tiefenListe = new LinkedList<>();
+		tiefenListe.add(posPacman);
+
+		while(!tiefenListe.isEmpty()) {
+			System.out.println("Tiefe: " + tiefe);
+			LinkedList<Knoten> tmp = new LinkedList<>();
+
+			System.out.print("| ");
+			for(Knoten node : tiefenListe)
+			{
+				System.out.print("(" + node.getPosX() + "," + node.getPosY() + ") |");
+				LinkedList<Knoten> childList = node.getChildren();
+				if(childList != null)
+					for(Knoten child : childList)
+						tmp.add(child);
 			}
-			else
-				tmp = null;
+
+			tiefenListe = tmp;
+			tiefe++;
+			System.out.println("\n");
 		}
 		System.out.println("\n");
 	}

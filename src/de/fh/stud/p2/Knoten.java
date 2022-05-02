@@ -59,10 +59,9 @@ public class Knoten {
 	public void setSeen(boolean seen) { this.seen = seen; }
 	public boolean isSeen(){ return this.seen; }
 
-	/*
-	public int getPosX(){ return this.PosX; }
-	public int getPosY(){ return this.PosY; }
-	*/
+	public int getPosX(){ return this.posX; }
+	public int getPosY(){ return this.posY; }
+
 
 	public LinkedList<Knoten> getChildren() { return this.children; }
 
