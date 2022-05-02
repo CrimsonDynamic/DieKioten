@@ -82,9 +82,9 @@ public class Knoten {
 			for(int j = -1; j <= 1; j++)
 			{
 				int childX = i + posX;
-				int childY = i + posY;
+				int childY = j + posY;
 				// Exkludiert den Knoten aus der Liste, der die Methode aufruft und überprüft auf OutOfBounds der view.
-				if( i != 0 && j != 0 && childX > -1 && childY > -1 && childY < view.length &&  childX < view[childY].length)
+				if( (i != 0 || j != 0) && childX > -1 && childY > -1 && childY < view.length &&  childX < view[childY].length)
 					children.add(new Knoten(view, childX, childY));
 			}
 		}

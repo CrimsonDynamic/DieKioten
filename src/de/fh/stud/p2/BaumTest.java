@@ -48,6 +48,7 @@ public class BaumTest {
 			if(count == 10)
 				return node;
 			node.expand();
+
 			for(Knoten child : node.getChildren()){
 				if(!child.isSeen())
 				{
