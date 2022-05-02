@@ -71,7 +71,7 @@ public class Knoten {
 	 * Betrachtet derzeitig ALLE Nachbarn des Knotens und nicht nur die Relevanten für eine Änderung des
 	 * Weltzustandes!
 	 */
-	public List<Knoten> expand() {
+	public LinkedList<Knoten> expand() {
 		/*
 		 * TODO Praktikum 2 [2]: Implementiert in dieser Methode das Expandieren des Knotens.
 		 * Die Methode soll die neu erzeugten Knoten (die Kinder des Knoten) zurückgeben.

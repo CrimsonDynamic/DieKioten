@@ -38,18 +38,20 @@ public class BaumTest {
 	static public Knoten BFS(Knoten node){
 		int count = 0;
 		LinkedList<Knoten> queue = new LinkedList<>();
-		node.setSeen(true);
-		queue.add(node);
+		Knoten tmp = node;
+
+		tmp.setSeen(true);
+		queue.add(tmp);
 
 		while(!queue.isEmpty()){
-			node = queue.get(0);
+			tmp = queue.get(0);
 			queue.remove(0);
 
 			if(count == 10)
 				return node;
-			node.expand();
 
-			for(Knoten child : node.getChildren()){
+			tmp.expand();
+			for(Knoten child : tmp.getChildren()){
 				if(!child.isSeen())
 				{
 					queue.add(child);
