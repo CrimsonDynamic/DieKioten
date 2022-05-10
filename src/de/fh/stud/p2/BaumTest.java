@@ -12,7 +12,7 @@ public class BaumTest {
 				{PacmanTileType.WALL,PacmanTileType.WALL,PacmanTileType.WALL,PacmanTileType.WALL}
 		};
 		//Startposition des Pacman
-		int posX = 0, posY = 0;
+		int posX = 1, posY = 1;
 		/*
 		 * TODO Praktikum 2 [3]: Baut hier basierend auf dem gegebenen 
 		 * Anfangszustand (siehe view, posX und posY) den Suchbaum auf.
@@ -47,29 +47,36 @@ public class BaumTest {
 
 	// Wurde auf static erweitert um in main aufgerufen werden zu können
 	static public Knoten BFS(Knoten node){
-		int count = 0;
-		LinkedList<Knoten> queue = new LinkedList<>();
-		Knoten tmp = node;
+		int depth = 0;
+		LinkedList<Knoten> openList = new LinkedList<>();
+		LinkedList<Knoten> closedList = new LinkedList<>();
 
-		tmp.setSeen(true);
-		queue.add(tmp);
+		Knoten current = node;
+		openList.add(current);
 
-		while(!queue.isEmpty()){
-			tmp = queue.get(0);
-			queue.remove(0);
+		while(!openList.isEmpty()){
+			current = openList.get(0);
+			openList.remove(0);
+			closedList.add(current);
 
-			if(count == 10)
+			if(depth == 10)
 				return node;
 
-			tmp.expand();
-			for(Knoten child : tmp.getChildren()){
-				if(!child.isSeen())
-				{
-					queue.add(child);
-					child.setSeen(true);
-				}
+			current.expand();
+			for(Knoten child : current.getChildren())
+			{
+				boolean seen = false;
+				for(Knoten closedChild : closedList)
+					if(child.equals(closedChild))
+					{
+						seen = true;
+						break;
+					}
+
+				if(!(seen || child.getPositionType() == PacmanTileType.WALL))
+					openList.add(child);
 			}
-			count++;
+			depth++;
 		}
 
 		return node;
