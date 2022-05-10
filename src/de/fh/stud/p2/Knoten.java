@@ -1,5 +1,6 @@
 package de.fh.stud.p2;
 
+import de.fh.pacman.Pacman;
 import de.fh.pacman.enums.PacmanTileType;
 
 import java.util.LinkedList;
@@ -12,8 +13,6 @@ public class Knoten {
 	private final int posX;
 	private final int posY;
 	private LinkedList<Knoten> children; // wird mit expand() gefüllt nicht über den Konstruktor
-
-	private boolean seen;
 
 	/*
 	 * TODO Praktikum 2 [1]: Erweitert diese Klasse um die notwendigen
@@ -49,19 +48,24 @@ public class Knoten {
 	public Knoten (Knoten parent, PacmanTileType[][] view, int posX, int posY)
 	{
 		this.parent = parent;
-		this.view = view;
 		this.posX = posX;
 		this.posY = posY;
+
+		this.view = view.clone();
+		PacmanTileType posType = view[posX][posY];
+		if( parent != null && (posType == PacmanTileType.DOT || posType == PacmanTileType.POWERPILL || posType == PacmanTileType.EMPTY) )
+		{
+			view[posX][posY] = PacmanTileType.PACMAN;
+			view[parent.posX][parent.posY] = PacmanTileType.EMPTY;
+		}
 	}
+
 	/*
 		Getter/Setter
 	 */
-	public void setSeen(boolean seen) { this.seen = seen; }
-	public boolean isSeen(){ return this.seen; }
-
-	public int getPosX(){ return this.posX; }
-	public int getPosY(){ return this.posY; }
-
+	public int getPosX() { return this.posX; }
+	public int getPosY() { return this.posY; }
+	public PacmanTileType getPositionType() { return view[posX][posY]; }
 
 	public LinkedList<Knoten> getChildren() { return this.children; }
 
@@ -83,8 +87,8 @@ public class Knoten {
 				int childX = i + posX;
 				int childY = j + posY;
 				// Exkludiert den Knoten aus der Liste, der die Methode aufruft und überprüft auf OutOfBounds der view.
-				if( (i != 0 || j != 0) && childX > -1 && childY > -1 && childY < view.length &&  childX < view[childY].length)
-					children.add(new Knoten(view, childX, childY));
+				if( getPositionType() != PacmanTileType.WALL && childX > -1 && childY > -1 && childY < view.length &&  childX < view[childY].length && ((i != 0  && j == 0) ^ (i == 0 && j != 0)) )
+					children.add(new Knoten(this, view, childX, childY));
 			}
 		}
 
@@ -93,5 +97,39 @@ public class Knoten {
 
 	public Knoten getParent() {
 		return parent;
+	}
+
+	public boolean compareView(PacmanTileType[][] otherView)
+	{
+		if (view.length != otherView.length)
+			return false;
+
+		for(int i = 0; i < view.length; i++)
+		{
+			if(view[i].length != otherView[i].length)
+				return false;
+
+			for(int j = 0; j < view[i].length; j++)
+				if(view[i][j] != otherView[i][j])
+					return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(this == obj)
+			return true;
+
+		else if(obj == null || obj.getClass() != this.getClass() )
+		{
+			Knoten knoten = (Knoten) obj;
+			return this.posX == knoten.posX && this.posY == knoten.posY && this.compareView(knoten.view);
+		}
+
+		else
+			return false;
 	}
 }
