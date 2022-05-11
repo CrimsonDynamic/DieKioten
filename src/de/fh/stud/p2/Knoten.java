@@ -81,16 +81,19 @@ public class Knoten {
 		 * TODO Praktikum 2 [2]: Implementiert in dieser Methode das Expandieren des Knotens.
 		 * Die Methode soll die neu erzeugten Knoten (die Kinder des Knoten) zurückgeben.
 		 */
-		children = new LinkedList<>();
-		for(int i = -1; i <= 1; i++)
+		if(children == null)
 		{
-			for(int j = -1; j <= 1; j++)
+			children = new LinkedList<>();
+			for(int i = -1; i <= 1; i++)
 			{
-				int childX = i + posX;
-				int childY = j + posY;
-				// Exkludiert den Knoten aus der Liste, der die Methode aufruft und überprüft auf OutOfBounds der view.
-				if( getPositionType() != PacmanTileType.WALL && childX > -1 && childY > -1 && childY < view.length &&  childX < view[childY].length && ((i != 0  && j == 0) ^ (i == 0 && j != 0)) )
-					children.add(new Knoten(this, view, childX, childY));
+				for(int j = -1; j <= 1; j++)
+				{
+					int childX = i + posX;
+					int childY = j + posY;
+					// Exkludiert den Knoten aus der Liste, der die Methode aufruft und überprüft auf OutOfBounds der view.
+					if( getPositionType() != PacmanTileType.WALL && childX > -1 && childY > -1 && childY < view.length &&  childX < view[childY].length && ((i != 0  && j == 0) ^ (i == 0 && j != 0)) )
+						children.add(new Knoten(this, view, childX, childY));
+				}
 			}
 		}
 

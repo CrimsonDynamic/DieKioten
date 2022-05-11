@@ -36,8 +36,18 @@ public class Suche {
 
 		while(!openList.isEmpty())
 		{
-		
+			if(!current.checkTileAvailability(PacmanTileType.DOT))
+				return current;
+
+			current = openList.getLast();
+			openList.removeLast();
+			closedList.add(current);
+
+			current.expand();
+			for(Knoten child : current.getChildren())
+				if(!(closedList.contains(child) || child.getPositionType() == PacmanTileType.WALL))
+					openList.add(child);
 		}
-		return null;
+		return current;
 	}
 }
