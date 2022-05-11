@@ -69,6 +69,8 @@ public class Knoten {
 
 	public LinkedList<Knoten> getChildren() { return this.children; }
 
+	public Knoten getParent() { return parent; }
+
 	/**
 	 * Expandiert den Wegbaum um die Nachbarn des zu expandierenden Knotens.
 	 * Betrachtet derzeitig ALLE Nachbarn des Knotens und nicht nur die Relevanten für eine Änderung des
@@ -95,8 +97,13 @@ public class Knoten {
 		return children;
 	}
 
-	public Knoten getParent() {
-		return parent;
+	public boolean checkTileAvailability(PacmanTileType tileType)
+	{
+		for(PacmanTileType[] arr : view )
+			for(PacmanTileType tile : arr)
+				if(tile == tileType)
+					return true;
+		return false;
 	}
 
 	public boolean compareView(PacmanTileType[][] otherView)
