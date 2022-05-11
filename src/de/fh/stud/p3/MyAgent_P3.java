@@ -50,7 +50,8 @@ public class MyAgent_P3 extends PacmanAgent_2021 {
 			/*
 			 * TODO Praktikum 4 [2]: Entscheidet hier welches Suchverfahren ausgeführt werden soll.
 			 */
-			Suche suche = new Suche();
+			Knoten posPacman = new Knoten(percept.getView(), percept.getPosition().x, percept.getPosition().y);
+			Suche suche = new Suche(posPacman);
 			loesungsKnoten = suche.start();
 		}
 		

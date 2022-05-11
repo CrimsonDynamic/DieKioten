@@ -9,7 +9,13 @@ public class Suche {
 	 * Attribute und Methoden um eine Tiefensuche durchführen zu können.
 	 * Die Erweiterung um weitere Suchstrategien folgt in Praktikum 4.
 	 */
-	
+	Knoten posPacman;
+
+	public Suche(Knoten rootNode)
+	{
+		this.posPacman = rootNode;
+	}
+
 	/*
 	 * TODO Praktikum 4 [1]: Erweitern Sie diese Klasse um weitere Suchstrategien (siehe Aufgabenblatt)
 	 * zu unterstützen.
