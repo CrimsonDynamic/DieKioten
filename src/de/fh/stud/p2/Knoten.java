@@ -102,7 +102,7 @@ public class Knoten {
 	}
 
 	public boolean checkTileAvailability(PacmanTileType tileType)
-	{	
+	{
 		for(PacmanTileType[] arr : view )
 			for(PacmanTileType tile : arr)
 				if(tile == tileType)
@@ -113,6 +113,37 @@ public class Knoten {
 	public boolean compareView(PacmanTileType[][] otherView)
 	{
 		return Arrays.deepEquals(view, otherView);
+	}
+
+	public void printChildren()
+	{
+		System.out.print("<|");
+		for(Knoten child : children)
+		{
+			System.out.print(" (" + child.posX + "," + child.posY + ") ");
+		}
+		System.out.print("|>");
+	}
+
+	public void printTree()
+	{
+		int currentDepth = 0;
+		LinkedList<Knoten> currentDepthNodes = new LinkedList<>();
+		currentDepthNodes.add(this);
+		System.out.println("Tiefe: " + currentDepth + "\n (" + posX + "," + posY + ")");
+
+		while( !currentDepthNodes.isEmpty() )
+		{
+			System.out.println("Tiefe: " + currentDepth);
+			LinkedList<Knoten> nextDepthNodes = new LinkedList<>();
+			for(Knoten node : currentDepthNodes)
+			{
+				node.printChildren();
+				nextDepthNodes.addAll(node.getChildren());
+			}
+			System.out.println();
+			currentDepthNodes = nextDepthNodes;
+		}
 	}
 
 	@Override
