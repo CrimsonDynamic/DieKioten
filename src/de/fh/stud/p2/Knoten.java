@@ -3,6 +3,7 @@ package de.fh.stud.p2;
 import de.fh.pacman.Pacman;
 import de.fh.pacman.enums.PacmanTileType;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -101,7 +102,7 @@ public class Knoten {
 	}
 
 	public boolean checkTileAvailability(PacmanTileType tileType)
-	{
+	{	
 		for(PacmanTileType[] arr : view )
 			for(PacmanTileType tile : arr)
 				if(tile == tileType)
@@ -111,20 +112,7 @@ public class Knoten {
 
 	public boolean compareView(PacmanTileType[][] otherView)
 	{
-		if (view.length != otherView.length)
-			return false;
-
-		for(int i = 0; i < view.length; i++)
-		{
-			if(view[i].length != otherView[i].length)
-				return false;
-
-			for(int j = 0; j < view[i].length; j++)
-				if(view[i][j] != otherView[i][j])
-					return false;
-		}
-
-		return true;
+		return Arrays.deepEquals(view, otherView);
 	}
 
 	@Override
