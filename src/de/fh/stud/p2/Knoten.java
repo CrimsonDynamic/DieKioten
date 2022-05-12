@@ -2,6 +2,7 @@ package de.fh.stud.p2;
 
 import de.fh.pacman.Pacman;
 import de.fh.pacman.enums.PacmanTileType;
+import de.fh.kiServer.util.Vector2;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -11,8 +12,7 @@ public class Knoten {
 
 	private final Knoten parent;
 	private final PacmanTileType[][] view;
-	private final int posX;
-	private final int posY;
+	private final Vector2 pos;
 	private LinkedList<Knoten> children; // wird mit expand() gefüllt nicht über den Konstruktor
 
 	/*
@@ -49,24 +49,24 @@ public class Knoten {
 	public Knoten (Knoten parent, PacmanTileType[][] view, int posX, int posY)
 	{
 		this.parent = parent;
-		this.posX = posX;
-		this.posY = posY;
+		this.pos = new Vector2(posX, posY);
 
 		this.view = view.clone();
 		PacmanTileType posType = view[posX][posY];
 		if( parent != null && (posType == PacmanTileType.DOT || posType == PacmanTileType.POWERPILL || posType == PacmanTileType.EMPTY) )
 		{
 			view[posX][posY] = PacmanTileType.PACMAN;
-			view[parent.posX][parent.posY] = PacmanTileType.EMPTY;
+			view[parent.pos.x][parent.pos.y] = PacmanTileType.EMPTY;
 		}
 	}
 
 	/*
 		Getter/Setter
 	 */
-	public int getPosX() { return this.posX; }
-	public int getPosY() { return this.posY; }
-	public PacmanTileType getPositionType() { return view[posX][posY]; }
+	public Vector2 getPos() { return this.pos; }
+	public int getPosX() { return this.pos.x; }
+	public int getPosY() { return this.pos.y; }
+	public PacmanTileType getPositionType() { return view[pos.x][pos.y]; }
 
 	public LinkedList<Knoten> getChildren() { return this.children; }
 
@@ -89,11 +89,14 @@ public class Knoten {
 			{
 				for(int j = -1; j <= 1; j++)
 				{
-					int childX = i + posX;
-					int childY = j + posY;
+					int childX = i + pos.x;
+					int childY = j + pos.y;
 					// Exkludiert den Knoten aus der Liste, der die Methode aufruft und überprüft auf OutOfBounds der view.
-					if( getPositionType() != PacmanTileType.WALL && childX > -1 && childY > -1 && childY < view.length &&  childX < view[childY].length && ((i != 0  && j == 0) ^ (i == 0 && j != 0)) )
+					if( getPositionType() != PacmanTileType.WALL && childX > -1 && childY > -1 && childY < view.length
+							&&  childX < view[childY].length && ((i != 0  && j == 0) ^ (i == 0 && j != 0)) )
+					{
 						children.add(new Knoten(this, view, childX, childY));
+					}
 				}
 			}
 		}
@@ -120,7 +123,7 @@ public class Knoten {
 		System.out.print("<|");
 		for(Knoten child : children)
 		{
-			System.out.print(" (" + child.posX + "," + child.posY + ") ");
+			System.out.print(" (" + child.pos.x + "," + child.pos.y + ") ");
 		}
 		System.out.print("|>");
 	}
@@ -130,7 +133,7 @@ public class Knoten {
 		int currentDepth = 0;
 		LinkedList<Knoten> currentDepthNodes = new LinkedList<>();
 		currentDepthNodes.add(this);
-		System.out.println("Tiefe: " + currentDepth + "\n (" + posX + "," + posY + ")");
+		System.out.println("Tiefe: " + currentDepth + "\n (" + pos.x + "," + pos.y + ")");
 
 		while( !currentDepthNodes.isEmpty() )
 		{
@@ -155,7 +158,7 @@ public class Knoten {
 		else if(obj == null || obj.getClass() != this.getClass() )
 		{
 			Knoten knoten = (Knoten) obj;
-			return this.posX == knoten.posX && this.posY == knoten.posY && this.compareView(knoten.view);
+			return this.pos.x == knoten.pos.x && this.pos.y == knoten.pos.y && this.compareView(knoten.view);
 		}
 
 		else
