@@ -9,7 +9,7 @@ import de.fh.pacman.PacmanStartInfo;
 import de.fh.pacman.enums.PacmanAction;
 import de.fh.pacman.enums.PacmanActionEffect;
 import de.fh.stud.p2.Knoten;
-import java.util.LinkedList;
+import java.util.Stack;
 
 public class MyAgent_P3 extends PacmanAgent_2021 {
 
@@ -17,7 +17,7 @@ public class MyAgent_P3 extends PacmanAgent_2021 {
 	 * Die als nächstes auszuführende Aktion
 	 */
 	private PacmanAction nextAction;
-	private LinkedList<PacmanAction> actionList;
+	private Stack<PacmanAction> actionStack;
 
 	/**
 	 * Der gefundene Lösungknoten der Suche
@@ -63,16 +63,20 @@ public class MyAgent_P3 extends PacmanAgent_2021 {
 			 * TODO Praktikum 3 [4]: Ermittelt hier die als naechstes auszufuehrende Aktion,
 			 * basierend auf dem loesungsknoten und weist diese nextAction zu.
 			 */
-			if(actionList.isEmpty())
+			if(actionStack.empty())
 			{
-				/*
 				Knoten current = loesungsKnoten;
 				while(current != null)
 				{
-
-				}*/
+					actionStack.push(current.determineActionFromParent());
+					current = current.getParent();
+				}
 			}
-			nextAction = PacmanAction.GO_EAST;
+
+			if(actionStack.empty())
+				loesungsKnoten = null;
+			else
+				nextAction = actionStack.pop();
 			
 		} else {
 			//Ansonsten wurde keine Lösung gefunden und der Pacman kann das Spiel aufgeben

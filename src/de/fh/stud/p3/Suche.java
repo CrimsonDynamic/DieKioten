@@ -54,7 +54,7 @@ public class Suche {
 					openList.add(child);
 		}
 		zielKnoten = current;
-		posPacman.printChildren();
+		posPacman.printTree();
 		return current;
 	}
 }

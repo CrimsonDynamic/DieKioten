@@ -1,6 +1,7 @@
 package de.fh.stud.p2;
 
 import de.fh.pacman.Pacman;
+import de.fh.pacman.enums.PacmanAction;
 import de.fh.pacman.enums.PacmanTileType;
 import de.fh.kiServer.util.Vector2;
 
@@ -111,6 +112,21 @@ public class Knoten {
 				if(tile == tileType)
 					return true;
 		return false;
+	}
+
+	public PacmanAction determineActionFromParent()
+	{
+		int distX = parent.getPosX() - this.getPosX();
+		int distY = parent.getPosY() - this.getPosY();
+
+		if(distX == 0 && distY == 1)
+			return PacmanAction.GO_SOUTH;
+		else if(distX == 1 && distY == 0)
+			return PacmanAction.GO_EAST;
+		else if(distX == 0 && distY == -1)
+			return PacmanAction.GO_NORTH;
+		else
+			return PacmanAction.GO_WEST;
 	}
 
 	public boolean compareView(PacmanTileType[][] otherView)
